@@ -1,0 +1,63 @@
+.asset-details-card {
+  margin-bottom: 1.5rem;
+
+  .metrics-grid {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1rem;
+
+    .main-metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+
+      .metric {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+
+        .label {
+          font-size: 0.875rem;
+          color: rgba(0, 0, 0, 0.54);
+        }
+
+        .value {
+          font-size: 1.5rem;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.87);
+        }
+      }
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+
+      .small-chart {
+        background: #fff;
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+        h4 {
+          margin: 0 0 1rem;
+          font-size: 1rem;
+          color: rgba(0, 0, 0, 0.87);
+        }
+
+        .chart-container {
+          height: 200px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

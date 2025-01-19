@@ -1,0 +1,36 @@
+<div class="table-container mat-elevation-z0">
+  <table mat-table [dataSource]="dataSource">
+    <!-- Timestamp Column -->
+    <ng-container matColumnDef="timestamp">
+      <th mat-header-cell *matHeaderCellDef>Timestamp</th>
+      <td mat-cell *matCellDef="let row">{{ formatDate(row.timestamp) }}</td>
+    </ng-container>
+
+    <!-- Active Power Column -->
+    <ng-container matColumnDef="activePower">
+      <th mat-header-cell *matHeaderCellDef>Active Power (kW)</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.activePower | number : "1.2-2" }}
+      </td>
+    </ng-container>
+
+    <!-- Voltage Column -->
+    <ng-container matColumnDef="voltage">
+      <th mat-header-cell *matHeaderCellDef>Voltage (V)</th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.voltage | number : "1.2-2" }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    showFirstLastButtons
+    aria-label="Select page"
+  >
+  </mat-paginator>
+</div>

@@ -1,0 +1,40 @@
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  background: white;
+  border-radius: 4px;
+  -webkit-overflow-scrolling: touch;
+
+  table {
+    width: 100%;
+    min-width: 500px;
+
+    th.mat-header-cell {
+      color: rgba(0, 0, 0, 0.87);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 12px;
+      white-space: nowrap;
+
+      @media (max-width: 768px) {
+        padding: 8px;
+      }
+    }
+
+    td.mat-cell {
+      padding: 12px;
+
+      @media (max-width: 768px) {
+        padding: 8px;
+      }
+    }
+
+    tr.mat-row:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .mat-paginator {
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+  }
+}

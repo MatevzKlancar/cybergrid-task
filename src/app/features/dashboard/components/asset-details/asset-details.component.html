@@ -1,0 +1,48 @@
+<mat-card class="asset-details-card">
+  <mat-card-header>
+    <mat-card-title>{{ asset.name }}</mat-card-title>
+    <mat-card-subtitle>{{ asset.type }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="metrics-grid">
+      <div class="main-metrics">
+        <div class="metric">
+          <span class="label">Power</span>
+          <span class="value">{{ asset.currentValues.activePower }} W</span>
+        </div>
+        <div class="metric">
+          <span class="label">Voltage</span>
+          <span class="value">{{ asset.currentValues.voltage }} V</span>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="small-chart">
+          <h4>Power Distribution</h4>
+          <div
+            echarts
+            [options]="powerDistributionOption"
+            class="chart-container"
+          ></div>
+        </div>
+        <div class="small-chart">
+          <h4>Efficiency</h4>
+          <div
+            echarts
+            [options]="efficiencyGaugeOption"
+            class="chart-container"
+          ></div>
+        </div>
+        <div class="small-chart">
+          <h4>Daily Trend</h4>
+          <div
+            echarts
+            [options]="dailyTrendOption"
+            class="chart-container"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,60 @@
+<div class="dashboard-layout mat-typography">
+  <mat-toolbar color="primary" class="dashboard-header">
+    <div class="header-content">
+      <span class="header-title">
+        <mat-icon>bolt</mat-icon>
+        Energy Assets Dashboard
+      </span>
+      <div class="user-section">
+        <span class="user-name">{{
+          (currentUser$ | async)?.email || "User"
+        }}</span>
+        <button
+          mat-icon-button
+          (click)="logout()"
+          class="logout-button"
+          matTooltip="Logout"
+        >
+          <mat-icon>logout</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-toolbar>
+
+  <main class="dashboard-main">
+    <div class="asset-selector-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Select Asset</mat-label>
+        <mat-select
+          [value]="selectedAsset"
+          (selectionChange)="onAssetSelected($event.value)"
+        >
+          <mat-option *ngFor="let asset of assets" [value]="asset">
+            {{ asset.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="content-container">
+      <app-asset-details
+        *ngIf="selectedAsset"
+        [asset]="selectedAsset"
+        [timeseriesData]="timeseriesData"
+      >
+      </app-asset-details>
+
+      <app-asset-table *ngIf="selectedAsset" [timeseriesData]="timeseriesData">
+      </app-asset-table>
+
+      <div class="no-selection" *ngIf="!selectedAsset">
+        <mat-card>
+          <mat-card-content class="empty-state">
+            <mat-icon>info</mat-icon>
+            <p>Please select an energy asset to view detailed data</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </main>
+</div>

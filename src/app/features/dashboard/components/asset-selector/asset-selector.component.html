@@ -1,0 +1,8 @@
+<div class="asset-selector">
+  <select class="form-select" (change)="onSelect($event)">
+    <option value="" disabled selected>Select an asset</option>
+    <option *ngFor="let asset of assets; let i = index" [value]="i">
+      {{ asset.name }} ({{ asset.type }})
+    </option>
+  </select>
+</div>
