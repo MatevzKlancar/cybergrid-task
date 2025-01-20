@@ -3,9 +3,13 @@ export interface EnergyAsset {
   name: string;
   type: 'PV' | 'Wind' | 'Battery';
   maxCapacity: number;
+  targetEfficiency: number;
   currentValues: {
     activePower: number;
+    reactivePower: number;
     voltage: number;
+    efficiency: number;
+    powerFactor: number;
   };
 }
 

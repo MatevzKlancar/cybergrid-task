@@ -132,15 +132,15 @@ export class AssetDetailsComponent
           endAngle: 0,
           min: 0,
           max: 100,
-          radius: '100%',
+          radius: '90%',
           splitNumber: 10,
           axisLine: {
             lineStyle: {
               width: 14,
               color: [
-                [0.3, '#ff4d4f'], // Red for low efficiency
-                [0.7, '#faad14'], // Yellow for medium efficiency
-                [1, '#52c41a'], // Green for high efficiency
+                [0.3, '#ff4d4f'],
+                [0.7, '#faad14'],
+                [1, '#52c41a'],
               ],
             },
           },
@@ -169,14 +169,14 @@ export class AssetDetailsComponent
           },
           axisLabel: {
             color: '#464646',
-            fontSize: 14,
-            distance: -36,
+            fontSize: 8,
+            distance: -25,
           },
           detail: {
             valueAnimation: true,
             formatter: '{value}%',
             color: '#464646',
-            fontSize: 24,
+            fontSize: 20,
             offsetCenter: [0, '20%'],
           },
           data: [
@@ -184,8 +184,8 @@ export class AssetDetailsComponent
               value: efficiency,
               name: 'Efficiency',
               title: {
-                offsetCenter: [0, '-65%'],
-                fontSize: 16,
+                offsetCenter: [0, '-60%'],
+                fontSize: 14,
                 color: '#464646',
               },
             },
@@ -199,6 +199,13 @@ export class AssetDetailsComponent
     const powerData = this.calculatePowerData();
 
     this.dailyTrendOption = {
+      grid: {
+        left: '15%',
+        right: '5%',
+        top: '15%',
+        bottom: '20%',
+        containLabel: true,
+      },
       tooltip: {
         trigger: 'axis',
         formatter: (params: any) => {
@@ -211,15 +218,32 @@ export class AssetDetailsComponent
         type: 'category',
         data: timeData,
         axisLabel: {
-          fontSize: 10,
+          fontSize: 8,
           rotate: 45,
+          interval: 0,
+          hideOverlap: true,
         },
       },
       yAxis: {
         type: 'value',
         name: 'Power (W)',
-        axisLabel: {
+        nameGap: 35,
+        nameTextStyle: {
           fontSize: 10,
+        },
+        axisLabel: {
+          fontSize: 8,
+          margin: 10,
+          formatter: (value: number) => {
+            return value.toLocaleString();
+          },
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            type: 'dashed',
+            opacity: 0.3,
+          },
         },
       },
       series: [
@@ -233,6 +257,8 @@ export class AssetDetailsComponent
           itemStyle: {
             color: '#5470c6',
           },
+          symbol: 'circle',
+          symbolSize: 4,
         },
       ],
     };
@@ -296,5 +322,23 @@ export class AssetDetailsComponent
         }
       });
     }, 0);
+  }
+
+  getEfficiencyStatus(): string {
+    if (!this.asset) return 'N/A';
+
+    const currentEfficiency = this.asset.currentValues.efficiency;
+    const targetEfficiency = this.asset.targetEfficiency;
+    const difference = currentEfficiency - targetEfficiency;
+
+    if (difference >= 0) {
+      return 'Optimal';
+    } else if (difference >= -5) {
+      return 'Good';
+    } else if (difference >= -10) {
+      return 'Fair';
+    } else {
+      return 'Poor';
+    }
   }
 }

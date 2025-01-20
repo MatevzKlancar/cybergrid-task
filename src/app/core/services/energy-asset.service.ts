@@ -15,9 +15,13 @@ export class EnergyAssetService {
       name: 'Solar Panel Array 1',
       type: 'PV',
       maxCapacity: 16000,
+      targetEfficiency: 95,
       currentValues: {
         activePower: 3600,
+        reactivePower: 800,
         voltage: 230.5,
+        efficiency: 92,
+        powerFactor: 0.95,
       },
     },
     {
@@ -25,9 +29,13 @@ export class EnergyAssetService {
       name: 'Wind Turbine 1',
       type: 'Wind',
       maxCapacity: 16000,
+      targetEfficiency: 90,
       currentValues: {
         activePower: 1423,
+        reactivePower: 400,
         voltage: 225.3,
+        efficiency: 85,
+        powerFactor: 0.92,
       },
     },
     {
@@ -35,9 +43,13 @@ export class EnergyAssetService {
       name: 'Battery Storage 1',
       type: 'Battery',
       maxCapacity: 16000,
+      targetEfficiency: 98,
       currentValues: {
         activePower: 8000,
+        reactivePower: 1200,
         voltage: 228.7,
+        efficiency: 96,
+        powerFactor: 0.98,
       },
     },
   ];

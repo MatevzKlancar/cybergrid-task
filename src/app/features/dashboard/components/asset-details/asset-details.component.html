@@ -23,6 +23,22 @@
       <div class="charts-grid">
         <div class="small-chart">
           <h4>Power Distribution</h4>
+          <div class="trend-stats">
+            <div class="stat-item">
+              <span class="label">Active Power</span>
+              <span class="value">{{ asset.currentValues.activePower }} W</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">Reactive Power</span>
+              <span class="value"
+                >{{ asset.currentValues.reactivePower }} W</span
+              >
+            </div>
+            <div class="stat-item">
+              <span class="label">Power Factor</span>
+              <span class="value">{{ asset.currentValues.powerFactor }}</span>
+            </div>
+          </div>
           <div
             echarts
             [options]="powerDistributionOption"
@@ -32,6 +48,20 @@
         </div>
         <div class="small-chart">
           <h4>Efficiency</h4>
+          <div class="trend-stats">
+            <div class="stat-item">
+              <span class="label">Current</span>
+              <span class="value">{{ asset.currentValues.efficiency }}%</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">Target</span>
+              <span class="value">{{ asset.targetEfficiency }}%</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">Status</span>
+              <span class="value">{{ getEfficiencyStatus() }}</span>
+            </div>
+          </div>
           <div
             echarts
             [options]="efficiencyGaugeOption"
