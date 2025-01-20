@@ -24,6 +24,7 @@
             echarts
             [options]="powerDistributionOption"
             class="chart-container"
+            (chartInit)="onChartInit($event)"
           ></div>
         </div>
         <div class="small-chart">
@@ -32,14 +33,30 @@
             echarts
             [options]="efficiencyGaugeOption"
             class="chart-container"
+            (chartInit)="onChartInit($event)"
           ></div>
         </div>
         <div class="small-chart">
           <h4>Daily Trend</h4>
+          <div class="trend-stats">
+            <div class="stat-item">
+              <span class="label">Peak Power</span>
+              <span class="value">{{ calculatePeakPower() }} W</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">Average Power</span>
+              <span class="value">{{ calculateAveragePower() }} W</span>
+            </div>
+            <div class="stat-item">
+              <span class="label">Time Range</span>
+              <span class="value">Last 24h</span>
+            </div>
+          </div>
           <div
             echarts
             [options]="dailyTrendOption"
             class="chart-container"
+            (chartInit)="onChartInit($event)"
           ></div>
         </div>
       </div>

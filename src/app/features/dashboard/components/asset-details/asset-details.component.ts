@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  AfterViewInit,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@shared/material.module';
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -7,6 +13,8 @@ import {
   EnergyAssetTimeseries,
 } from '@core/models/energy-asset.model';
 import { SkeletonComponent } from '@shared/skeleton/skeleton.component';
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-details',
@@ -15,7 +23,9 @@ import { SkeletonComponent } from '@shared/skeleton/skeleton.component';
   standalone: true,
   imports: [CommonModule, MaterialModule, SkeletonComponent, NgxEchartsModule],
 })
-export class AssetDetailsComponent implements OnChanges {
+export class AssetDetailsComponent
+  implements OnChanges, AfterViewInit, OnDestroy
+{
   @Input({ required: true }) asset!: EnergyAsset;
   @Input() timeseriesData: EnergyAssetTimeseries[] = [];
   @Input() loading = false;
@@ -24,13 +34,38 @@ export class AssetDetailsComponent implements OnChanges {
   efficiencyGaugeOption: any;
   dailyTrendOption: any;
 
+  private resizeSubscription: any;
+  private chartInstances: any[] = [];
+
   constructor() {
     // Initialize echarts
     import('echarts');
+
+    // Listen to window resize events with debounce
+    this.resizeSubscription = fromEvent(window, 'resize')
+      .pipe(debounceTime(100))
+      .subscribe(() => {
+        this.resizeCharts();
+      });
   }
 
   ngOnChanges(): void {
     this.updateCharts();
+  }
+
+  ngAfterViewInit() {
+    // Initial setup of charts
+    this.resizeCharts();
+  }
+
+  onChartInit(event: any) {
+    this.chartInstances.push(event);
+  }
+
+  ngOnDestroy() {
+    if (this.resizeSubscription) {
+      this.resizeSubscription.unsubscribe();
+    }
   }
 
   private updateCharts(): void {
@@ -221,5 +256,34 @@ export class AssetDetailsComponent implements OnChanges {
       .filter((_, index) => index % interval === 0)
       .slice(0, 6)
       .map((data) => data.activePower);
+  }
+
+  public calculatePeakPower(): number {
+    if (this.timeseriesData.length === 0) return 0;
+    return Math.max(...this.timeseriesData.map((d) => d.activePower));
+  }
+
+  public calculateAveragePower(): number {
+    if (this.timeseriesData.length === 0) return 0;
+    const sum = this.timeseriesData.reduce(
+      (acc, curr) => acc + curr.activePower,
+      0
+    );
+    return Math.round(sum / this.timeseriesData.length);
+  }
+
+  private resizeCharts(): void {
+    setTimeout(() => {
+      this.chartInstances.forEach((chart) => {
+        if (chart) {
+          chart.resize({
+            width: 'auto',
+            animation: {
+              duration: 300,
+            },
+          });
+        }
+      });
+    }, 0);
   }
 }

@@ -1,46 +1,84 @@
 .asset-details-card {
   margin-bottom: 1.5rem;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+
+  .mat-mdc-card-content {
+    padding: 2rem;
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 
   .metrics-grid {
     display: grid;
-    gap: 1.5rem;
-    padding: 1rem;
+    gap: 2rem;
+    width: 100%;
+    min-width: 0;
+    max-width: 1200px;
+    margin: 0 auto;
 
     .main-metrics {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      width: 100%;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-sizing: border-box;
 
       .metric {
         display: flex;
         flex-direction: column;
-        padding: 1rem;
-        background: #f8f9fa;
+        padding: 1.5rem;
+        background: white;
         border-radius: 8px;
+        min-width: 0;
+        box-sizing: border-box;
+        justify-content: center;
+        height: 100%;
 
         .label {
-          font-size: 0.875rem;
-          color: rgba(0, 0, 0, 0.54);
+          font-size: 1rem;
+          color: rgba(0, 0, 0, 0.6);
+          margin-bottom: 0.5rem;
         }
 
         .value {
-          font-size: 1.5rem;
-          font-weight: 500;
+          font-size: 1.25rem;
           color: rgba(0, 0, 0, 0.87);
+          font-weight: 500;
+        }
+
+        .label,
+        .value {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }
 
     .charts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      width: 100%;
+      box-sizing: border-box;
 
       .small-chart {
-        background: #fff;
+        background: white;
         border-radius: 8px;
-        padding: 1rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
 
         h4 {
           margin: 0 0 1rem;
@@ -49,7 +87,17 @@
         }
 
         .chart-container {
+          position: relative;
+          width: 100%;
           height: 200px;
+          min-height: 200px;
+          padding: 0.5rem;
+          box-sizing: border-box;
+
+          & > div {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }
@@ -57,7 +105,94 @@
 }
 
 @media (max-width: 768px) {
-  .charts-grid {
-    grid-template-columns: 1fr !important;
+  .asset-details-card {
+    .mat-mdc-card-content {
+      padding: 1rem;
+    }
+
+    .metrics-grid {
+      margin: 0 0.75rem;
+
+      .main-metrics {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+
+        .small-chart {
+          padding: 1.25rem;
+
+          .chart-container {
+            padding: 0.25rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .asset-details-card {
+    .metrics-grid {
+      .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  }
+}
+
+@media (min-width: 1201px) {
+  .asset-details-card {
+    .metrics-grid {
+      .charts-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  }
+}
+
+// Force single column layout below 250px
+@media (max-width: 250px) {
+  .asset-details-card {
+    .metrics-grid {
+      .charts-grid {
+        .small-chart {
+          min-width: 200px;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.trend-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: rgba(84, 112, 198, 0.05);
+  border-radius: 8px;
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0.5rem;
+
+    .label {
+      font-size: 0.75rem;
+      color: rgba(0, 0, 0, 0.6);
+      margin-bottom: 0.25rem;
+    }
+
+    .value {
+      font-size: 1rem;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.87);
+    }
   }
 }
