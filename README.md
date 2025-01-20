@@ -1,59 +1,145 @@
-# CybergridFrontend
+# CybergridFrontend - Energy Asset Management Dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.1.
+A real-time energy asset monitoring dashboard built with Angular 19 and Apache ECharts.
 
-## Development server
+## Overview
 
-To start a local development server, run:
+This application provides a dashboard for monitoring energy assets (PV, Wind, Battery) and their real-time data. The backend is currently mocked for demonstration purposes.
 
-```bash
-ng serve
+## Features
+
+- 🔐 User authentication (mocked)
+- 📊 Real-time asset monitoring
+- 📈 Interactive charts using Apache ECharts
+- 📱 Responsive design
+- 📋 Tabular data view
+- 🎨 Material Design integration
+
+## Technical Documentation
+
+### Architecture
+
+The application follows a modular architecture with these key components:
+
+```
+src/
+├── app/
+│   ├── core/              # Core functionality
+│   │   ├── models/        # Data models
+│   │   ├── services/      # Services
+│   │   └── guards/        # Route guards
+│   ├── features/          # Feature modules
+│   │   ├── auth/          # Authentication
+│   │   └── dashboard/     # Main dashboard
+│   └── shared/           # Shared components
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Mocked Backend Services
 
-## Code scaffolding
+The application uses the following mocked services:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+1. **Authentication Service**
+
+   - Simulates user login/logout
+   - Stores session in localStorage
+   - Default credentials: any email/password combination
+
+2. **Energy Asset Service**
+   - Provides mock energy asset data
+   - Generates random timeseries data
+   - Simulates network delays and errors
+
+### Data Models
+
+1. **Energy Asset**
+
+   ```typescript
+   interface EnergyAsset {
+     id: string;
+     name: string;
+     type: "PV" | "Wind" | "Battery";
+     maxCapacity: number;
+     targetEfficiency: number;
+     currentValues: {
+       activePower: number;
+       reactivePower: number;
+       voltage: number;
+       efficiency: number;
+       powerFactor: number;
+     };
+   }
+   ```
+
+2. **Timeseries Data**
+   ```typescript
+   interface EnergyAssetTimeseries {
+     assetId: string;
+     timestamp: string;
+     activePower: number;
+     voltage: number;
+   }
+   ```
+
+### Charts and Visualizations
+
+The dashboard uses Apache ECharts for data visualization:
+
+1. **Efficiency Gauge**
+
+   - Displays current efficiency
+   - Updates in real-time
+   - Color-coded indicators
+
+2. **Daily Trend Chart**
+   - 24-hour power trend
+   - Dual Y-axis for power and voltage
+   - Interactive tooltips
+
+## Development Setup
+
+1. **Prerequisites**
+
+   - Node.js (v18 or higher)
+   - npm (v9 or higher)
+   - Angular CLI (v19.1.1)
+
+2. **Installation**
+
+   ```bash
+   git clone https://github.com/MatevzKlancar/cybergrid-frontend.git
+   cd cybergrid-frontend
+   npm install
+   ```
+
+3. **Running the Application**
+
+   ```bash
+   npm start
+   ```
+
+   Navigate to `http://localhost:4200`
+
+4. **Building for Production**
+   ```bash
+   npm run build
+   ```
+
+## Testing
+
+The application includes unit tests for components and services:
 
 ```bash
-ng generate component component-name
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm test -- --code-coverage
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Deployment
 
-```bash
-ng generate --help
-```
+The application is configured for deployment on Vercel:
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. **Live Demo**: [https://cybergrid-task.vercel.app](https://cybergrid-task.vercel.app)
+2. **Automatic Deployments**: Connected to main branch
+3. **Build Command**: `npm run vercel-build`
