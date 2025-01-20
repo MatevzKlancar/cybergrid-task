@@ -2,6 +2,7 @@
   <div
     echarts
     [options]="chartOption"
+    (chartInit)="onChartInit($event)"
     class="chart"
     [loading]="!timeseriesData.length"
   ></div>

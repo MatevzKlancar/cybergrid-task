@@ -1,6 +1,9 @@
 <mat-card class="asset-details-card">
   <mat-card-header>
-    <mat-card-title>{{ asset.name }}</mat-card-title>
+    <mat-card-title>
+      <app-skeleton *ngIf="loading" width="200px" height="24px"></app-skeleton>
+      <ng-container *ngIf="!loading">{{ asset.name }}</ng-container>
+    </mat-card-title>
     <mat-card-subtitle>{{ asset.type }}</mat-card-subtitle>
   </mat-card-header>
 

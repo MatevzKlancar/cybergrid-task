@@ -7,14 +7,14 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@shared/material.module';
-import { NgxEchartsModule } from 'ngx-echarts';
+import { NgxEchartsModule, NgxEchartsDirective } from 'ngx-echarts';
 import {
   EnergyAsset,
   EnergyAssetTimeseries,
 } from '@core/models/energy-asset.model';
 import { SkeletonComponent } from '@shared/skeleton/skeleton.component';
-import { fromEvent } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-asset-details',
@@ -34,18 +34,22 @@ export class AssetDetailsComponent
   efficiencyGaugeOption: any;
   dailyTrendOption: any;
 
-  private resizeSubscription: any;
+  private destroy$ = new Subject<void>();
   private chartInstances: any[] = [];
 
   constructor() {
     // Initialize echarts
     import('echarts');
 
-    // Listen to window resize events with debounce
-    this.resizeSubscription = fromEvent(window, 'resize')
-      .pipe(debounceTime(100))
+    // Handle window resize events with debounce
+    fromEvent(window, 'resize')
+      .pipe(debounceTime(250), takeUntil(this.destroy$))
       .subscribe(() => {
-        this.resizeCharts();
+        this.chartInstances.forEach((chart) => {
+          if (chart) {
+            chart.resize();
+          }
+        });
       });
   }
 
@@ -58,14 +62,21 @@ export class AssetDetailsComponent
     this.resizeCharts();
   }
 
-  onChartInit(event: any) {
+  onChartInit(event: any): void {
     this.chartInstances.push(event);
   }
 
-  ngOnDestroy() {
-    if (this.resizeSubscription) {
-      this.resizeSubscription.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+
+    // Dispose of chart instances
+    this.chartInstances.forEach((chart) => {
+      if (chart) {
+        chart.dispose();
+      }
+    });
+    this.chartInstances = [];
   }
 
   private updateCharts(): void {

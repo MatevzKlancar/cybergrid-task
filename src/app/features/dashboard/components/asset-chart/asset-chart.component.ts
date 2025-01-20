@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@shared/material.module';
 import { NgxEchartsModule } from 'ngx-echarts';
@@ -7,6 +7,7 @@ import {
   EnergyAssetTimeseries,
 } from '@core/models/energy-asset.model';
 import { EChartsOption } from 'echarts';
+import type { ECharts } from 'echarts';
 
 @Component({
   selector: 'app-asset-chart',
@@ -14,11 +15,23 @@ import { EChartsOption } from 'echarts';
   styleUrls: ['./asset-chart.component.scss'],
   imports: [CommonModule, MaterialModule, NgxEchartsModule],
 })
-export class AssetChartComponent implements OnChanges {
+export class AssetChartComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) asset!: EnergyAsset;
   @Input() timeseriesData: EnergyAssetTimeseries[] = [];
 
   chartOption: EChartsOption = {};
+  private chartInstance: ECharts | null = null;
+
+  onChartInit(ec: ECharts): void {
+    this.chartInstance = ec;
+  }
+
+  ngOnDestroy(): void {
+    if (this.chartInstance) {
+      this.chartInstance.dispose();
+      this.chartInstance = null;
+    }
+  }
 
   ngOnChanges(): void {
     this.updateChartOptions();
