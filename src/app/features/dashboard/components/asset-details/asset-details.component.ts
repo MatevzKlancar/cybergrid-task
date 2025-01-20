@@ -6,21 +6,28 @@ import {
   EnergyAsset,
   EnergyAssetTimeseries,
 } from '@core/models/energy-asset.model';
+import { SkeletonComponent } from '@shared/skeleton/skeleton.component';
 
 @Component({
   selector: 'app-asset-details',
   templateUrl: './asset-details.component.html',
   styleUrls: ['./asset-details.component.scss'],
   standalone: true,
-  imports: [CommonModule, MaterialModule, NgxEchartsModule],
+  imports: [CommonModule, MaterialModule, SkeletonComponent, NgxEchartsModule],
 })
 export class AssetDetailsComponent implements OnChanges {
   @Input({ required: true }) asset!: EnergyAsset;
   @Input() timeseriesData: EnergyAssetTimeseries[] = [];
+  @Input() loading = false;
 
   powerDistributionOption: any;
   efficiencyGaugeOption: any;
   dailyTrendOption: any;
+
+  constructor() {
+    // Initialize echarts
+    import('echarts');
+  }
 
   ngOnChanges(): void {
     this.updateCharts();
@@ -28,6 +35,11 @@ export class AssetDetailsComponent implements OnChanges {
 
   private updateCharts(): void {
     // Power Distribution Pie Chart
+    const availableCapacity =
+      this.asset.maxCapacity - this.asset.currentValues.activePower;
+    const usedPercentage =
+      (this.asset.currentValues.activePower / this.asset.maxCapacity) * 100;
+
     this.powerDistributionOption = {
       tooltip: {
         trigger: 'item',
@@ -48,7 +60,7 @@ export class AssetDetailsComponent implements OnChanges {
               itemStyle: { color: '#5470c6' },
             },
             {
-              value: Math.max(1500 - this.asset.currentValues.activePower, 0), // Assuming max capacity is 1500W
+              value: availableCapacity,
               name: 'Available Capacity',
               itemStyle: { color: '#91cc75' },
             },
@@ -126,7 +138,9 @@ export class AssetDetailsComponent implements OnChanges {
               value: efficiency,
               name: 'Efficiency',
               title: {
-                offsetCenter: [0, '-20%'],
+                offsetCenter: [0, '-65%'],
+                fontSize: 16,
+                color: '#464646',
               },
             },
           ],

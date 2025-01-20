@@ -14,10 +14,10 @@ export class EnergyAssetService {
       id: '1',
       name: 'Solar Panel Array 1',
       type: 'PV',
-      maxCapacity: 7200,
+      maxCapacity: 16000,
       currentValues: {
-        activePower: 0,
-        voltage: 0,
+        activePower: 3600,
+        voltage: 230.5,
       },
     },
     {
@@ -36,8 +36,8 @@ export class EnergyAssetService {
       type: 'Battery',
       maxCapacity: 16000,
       currentValues: {
-        activePower: 0,
-        voltage: 0,
+        activePower: 8000,
+        voltage: 228.7,
       },
     },
   ];

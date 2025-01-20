@@ -44,31 +44,23 @@ export class DashboardComponent implements OnInit {
   loadAssets(): void {
     this.energyAssetService.getAssets().subscribe({
       next: (assets) => {
-        console.log('Loaded assets:', assets);
         this.assets = assets;
         // Find and select the Wind Turbine asset
         const windAsset = assets.find((asset) => {
-          console.log('Checking asset:', asset.name, 'Type:', asset.type);
           return asset.type === 'Wind';
         });
-        console.log('Found wind asset:', windAsset);
 
         if (windAsset) {
-          console.log('Selecting wind asset:', windAsset);
           this.onAssetSelected(windAsset);
         } else if (assets.length > 0) {
-          console.log('No wind asset found, selecting first asset:', assets[0]);
           this.onAssetSelected(assets[0]);
         }
       },
-      error: (error) => {
-        console.error('Error loading assets:', error);
-      },
+      error: (error) => {},
     });
   }
 
   onAssetSelected(asset: EnergyAsset): void {
-    console.log('Asset selected:', asset);
     this.selectedAsset = asset;
     this.loadTimeseriesData(asset.id);
   }
